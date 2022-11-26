@@ -13,16 +13,13 @@ public class Autoexemplar {
     private String kennzeichen;
     @Basic
     @Column(name = "KILOMETERSTAND")
-    private BigInteger kilometerstand;
+    private double kilometerstand;
     @Basic
     @Column(name = "LETZTERTUEV")
     private Date letztertuev;
     @Basic
     @Column(name = "KAUFDATUM")
     private Date kaufdatum;
-//    @Basic
-//    @Column(name = "AUTOMODELLNR")
-//    private BigInteger automodellnr;
     @OneToMany(mappedBy = "autoexemplar")
     private Collection<Ausleihvorgang> ausleihvorgaenge;
     @ManyToOne
@@ -39,11 +36,11 @@ public class Autoexemplar {
         this.kennzeichen = kennzeichen;
     }
 
-    public BigInteger getKilometerstand() {
+    public double getKilometerstand() {
         return kilometerstand;
     }
 
-    public void setKilometerstand(BigInteger kilometerstand) {
+    public void setKilometerstand(double kilometerstand) {
         this.kilometerstand = kilometerstand;
     }
 
@@ -63,14 +60,6 @@ public class Autoexemplar {
         this.kaufdatum = kaufdatum;
     }
 
-//    public BigInteger getAutomodellnr() {
-//        return automodellnr;
-//    }
-//
-//    public void setAutomodellnr(BigInteger automodellnr) {
-//        this.automodellnr = automodellnr;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -78,23 +67,23 @@ public class Autoexemplar {
 
         Autoexemplar that = (Autoexemplar) o;
 
+        if (Double.compare(that.kilometerstand, kilometerstand) != 0) return false;
         if (kennzeichen != null ? !kennzeichen.equals(that.kennzeichen) : that.kennzeichen != null) return false;
-        if (kilometerstand != null ? !kilometerstand.equals(that.kilometerstand) : that.kilometerstand != null)
-            return false;
         if (letztertuev != null ? !letztertuev.equals(that.letztertuev) : that.letztertuev != null) return false;
         if (kaufdatum != null ? !kaufdatum.equals(that.kaufdatum) : that.kaufdatum != null) return false;
-//        if (automodellnr != null ? !automodellnr.equals(that.automodellnr) : that.automodellnr != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = kennzeichen != null ? kennzeichen.hashCode() : 0;
-        result = 31 * result + (kilometerstand != null ? kilometerstand.hashCode() : 0);
+        long temp;
+        temp = Double.doubleToLongBits(kilometerstand);
+        int result = (int) (temp ^ (temp >>> 32));
+        result = kennzeichen != null ? kennzeichen.hashCode() : 0;
+
         result = 31 * result + (letztertuev != null ? letztertuev.hashCode() : 0);
         result = 31 * result + (kaufdatum != null ? kaufdatum.hashCode() : 0);
-//        result = 31 * result + (automodellnr != null ? automodellnr.hashCode() : 0);
         return result;
     }
 

@@ -130,14 +130,6 @@ public class Automodell {
         this.automodellnr = automodellnr;
     }
 
-//    public String getKlassenbezeichnung() {
-//        return klassenbezeichnung;
-//    }
-//
-//    public void setKlassenbezeichnung(String klassenbezeichnung) {
-//        this.klassenbezeichnung = klassenbezeichnung;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -157,8 +149,6 @@ public class Automodell {
         if (ladegewichtkg != null ? !ladegewichtkg.equals(that.ladegewichtkg) : that.ladegewichtkg != null)
             return false;
         if (automodellnr != null ? !automodellnr.equals(that.automodellnr) : that.automodellnr != null) return false;
-//        if (klassenbezeichnung != null ? !klassenbezeichnung.equals(that.klassenbezeichnung) : that.klassenbezeichnung != null)
-//            return false;
 
         return true;
     }
@@ -179,7 +169,6 @@ public class Automodell {
         result = 31 * result + (achsenzahl != null ? achsenzahl.hashCode() : 0);
         result = 31 * result + (ladegewichtkg != null ? ladegewichtkg.hashCode() : 0);
         result = 31 * result + (automodellnr != null ? automodellnr.hashCode() : 0);
-//        result = 31 * result + (klassenbezeichnung != null ? klassenbezeichnung.hashCode() : 0);
         return result;
     }
 

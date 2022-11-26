@@ -1,49 +1,97 @@
-import model.Ausleihvorgang;
+import model.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.*;
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
 
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AutoverleihJPA");
+    private EntityManager em = emf.createEntityManager();
+
     public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("AutoverleihJPA");
-        EntityManager em = emf.createEntityManager();
+        new Main();
+    }
 
-        CriteriaBuilder qb = em.getCriteriaBuilder();
-        CriteriaQuery<Long> cq = qb.createQuery(Long.class);
-        cq.select(qb.count(cq.from(Ausleihvorgang.class)));
-        long count = em.createQuery(cq).getSingleResult();
+    public Main() {
+        pollMenu();
+    }
 
-        System.out.println("Es gibt " + count + " Ausleihvorgänge.");
-        for (int i = 0; i < count; i++) {
+    private void pollMenu() {
+        Scanner scanner = new Scanner(System.in);
+        do {
 
-            Ausleihvorgang sg = em.find(Ausleihvorgang.class, BigInteger.valueOf(i));
-            if (sg == null) {
-                System.out.println("Kein Ausleihvorgang mit dieser Nummer " + i);
-                em.close();
-                emf.close();
-                return;
+            System.out.println("Bitte gib das Kennzeichen des zurückzugebenen Autos ein (oder e für exit): ");
+            String kennzeichen = scanner.nextLine();
+            if (kennzeichen.equals("e")) {
+                break;
             }
-            System.out.println("Ausleihvorgang " + sg.getAusleihvorgangnr() + " hat das Auto: ");
-            System.out.println(" Kennzeichen: " + sg.getAutoexemplar().getKennzeichen());
-        }
+            Autoexemplar retCar = getCarToReturn(kennzeichen);
+            if (retCar == null) {
+                System.out.println("Das Auto mit Kennzeichen " + kennzeichen + " kann nicht gefunden werden.");
+                break;
+            }
+            Collection<Ausleihvorgang> jpaWorkingList = retCar.getAusleihvorgaenge();
+            List<Ausleihvorgang> ausleihvorgange = new ArrayList<>(jpaWorkingList)
+                    .stream()
+                    .filter(a -> a.getEndezeit() == null && a.getRechnung() == null && a.getEndekm() == 0.0)
+                    .collect(Collectors.toList());
 
-//        if (args.length < 3) {
-//            em.close();
-//            emf.close();
-//            return;
-//        }
-//        em.getTransaction().begin();
-//        Studenten neuS = new Studenten();
-//        neuS.setMatrnr(Long.parseLong(args[1]));
-//        neuS.setName(args[2]);
-//        neuS.setStudiengang(sg);
-//        em.persist(neuS);
-//        em.getTransaction().commit();
+            if (ausleihvorgange.size() != 1) {
+                System.out.println("Es gibt mehrere oder keinen offenen Ausleihvorgang. Size: " + ausleihvorgange.size());
+                break;
+            }
+            Ausleihvorgang ausleihvorgang = ausleihvorgange.get(0);
+            System.out.println("Was ist der momentane Kilometerstand des Autos: ");
+            double kmStand = scanner.nextDouble();
+            Timestamp timeNow = Timestamp.from(Instant.now());
+            ausleihvorgang.setEndezeit(timeNow);
+            ausleihvorgang.setEndekm(kmStand);
+            double oldKmStand = retCar.getKilometerstand();
+            retCar.setKilometerstand(kmStand);
+
+            em.getTransaction().begin();
+            em.merge(ausleihvorgang);
+            em.merge(retCar);
+            em.getTransaction().commit();
+
+            double anzKm = retCar.getKilometerstand() - oldKmStand;
+            long anzTage = Duration.between(ausleihvorgang.getBeginnzeit().toLocalDateTime(), ausleihvorgang.getEndezeit().toLocalDateTime()).toDays();
+            System.out.println("Es wurden " + anzKm + " Km in " + anzTage + " Tagen gefahren.");
+
+            Rechnung rechnung = new Rechnung();
+            double summe = retCar.getAutomodell().getPreisprokm() * anzKm;
+            summe += retCar.getAutomodell().getPreisprotag() * anzTage;
+            rechnung.setAusleihvorgang(ausleihvorgang);
+            rechnung.setSumme(summe);
+            rechnung.setBeglichen("f");
+            ausleihvorgang.setRechnung(rechnung);
+            System.out.println("Die Gesammtkosten belaufen sich auf " + summe + " Euro");
+
+            em.getTransaction().begin();
+            em.merge(ausleihvorgang);
+            em.persist(rechnung);
+            em.getTransaction().commit();//TODO
+        } while (true);
+        cleanUp();
+    }
+
+    private Autoexemplar getCarToReturn(String kenz) {
+        TypedQuery<Autoexemplar> q = em.createQuery("SELECT a FROM Autoexemplar a WHERE a.kennzeichen = :kenz", Autoexemplar.class);
+        q.setParameter("kenz", kenz);
+        List<Autoexemplar> results = q.getResultList();
+        if (results.size() != 1)
+            return null;
+        else
+            return results.get(0);
+    }
+
+    private void cleanUp() {
         em.close();
         emf.close();
     }

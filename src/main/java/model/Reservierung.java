@@ -16,15 +16,6 @@ public class Reservierung {
     @Id
     @Column(name = "RESNR")
     private BigInteger resnr;
-//    @Basic
-//    @Column(name = "AUTOMODELLNR")
-//    private BigInteger automodellnr;
-//    @Basic
-//    @Column(name = "KUNDENNR")
-//    private BigInteger kundennr;
-//    @Basic
-//    @Column(name = "AUSLEIHVORGANGNR")
-//    private BigInteger ausleihvorgangnr;
     @ManyToOne
     @JoinColumn(name = "AUTOMODELLNR", referencedColumnName = "AUTOMODELLNR")
     private Automodell automodell;
@@ -59,30 +50,6 @@ public class Reservierung {
         this.resnr = resnr;
     }
 
-//    public BigInteger getAutomodellnr() {
-//        return automodellnr;
-//    }
-//
-//    public void setAutomodellnr(BigInteger automodellnr) {
-//        this.automodellnr = automodellnr;
-//    }
-//
-//    public BigInteger getKundennr() {
-//        return kundennr;
-//    }
-//
-//    public void setKundennr(BigInteger kundennr) {
-//        this.kundennr = kundennr;
-//    }
-//
-//    public BigInteger getAusleihvorgangnr() {
-//        return ausleihvorgangnr;
-//    }
-//
-//    public void setAusleihvorgangnr(BigInteger ausleihvorgangnr) {
-//        this.ausleihvorgangnr = ausleihvorgangnr;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -95,10 +62,6 @@ public class Reservierung {
         if (geplantesende != null ? !geplantesende.equals(that.geplantesende) : that.geplantesende != null)
             return false;
         if (resnr != null ? !resnr.equals(that.resnr) : that.resnr != null) return false;
-//        if (automodellnr != null ? !automodellnr.equals(that.automodellnr) : that.automodellnr != null) return false;
-//        if (kundennr != null ? !kundennr.equals(that.kundennr) : that.kundennr != null) return false;
-//        if (ausleihvorgangnr != null ? !ausleihvorgangnr.equals(that.ausleihvorgangnr) : that.ausleihvorgangnr != null)
-//            return false;
 
         return true;
     }
@@ -108,9 +71,6 @@ public class Reservierung {
         int result = geplanterstart != null ? geplanterstart.hashCode() : 0;
         result = 31 * result + (geplantesende != null ? geplantesende.hashCode() : 0);
         result = 31 * result + (resnr != null ? resnr.hashCode() : 0);
-//        result = 31 * result + (automodellnr != null ? automodellnr.hashCode() : 0);
-//        result = 31 * result + (kundennr != null ? kundennr.hashCode() : 0);
-//        result = 31 * result + (ausleihvorgangnr != null ? ausleihvorgangnr.hashCode() : 0);
         return result;
     }
 

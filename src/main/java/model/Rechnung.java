@@ -8,16 +8,25 @@ public class Rechnung {
     @Basic
     @Column(name = "SUMME")
     private double summe;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "RECH_ID_SEQ", sequenceName  = "RECH_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RECH_ID_SEQ")
     @Id
     @Column(name = "RECHNR")
     private BigInteger rechnr;
-//    @Basic
-//    @Column(name = "AUSLEIHVORGANGNR")
-//    private BigInteger ausleihvorgangnr;
     @OneToOne
     @JoinColumn(name = "AUSLEIHVORGANGNR", referencedColumnName = "AUSLEIHVORGANGNR")
     private Ausleihvorgang ausleihvorgang;
+    @Basic
+    @Column(name = "BEGLICHEN")
+    private String beglichen;
+
+    public String getBeglichen() {
+        return beglichen;
+    }
+
+    public void setBeglichen(String beglichen) {
+        this.beglichen = beglichen;
+    }
 
     public double getSumme() {
         return summe;
@@ -35,14 +44,6 @@ public class Rechnung {
         this.rechnr = rechnr;
     }
 
-//    public BigInteger getAusleihvorgangnr() {
-//        return ausleihvorgangnr;
-//    }
-//
-//    public void setAusleihvorgangnr(BigInteger ausleihvorgangnr) {
-//        this.ausleihvorgangnr = ausleihvorgangnr;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,8 +53,6 @@ public class Rechnung {
 
         if (Double.compare(rechnung.summe, summe) != 0) return false;
         if (rechnr != null ? !rechnr.equals(rechnung.rechnr) : rechnung.rechnr != null) return false;
-//        if (ausleihvorgangnr != null ? !ausleihvorgangnr.equals(rechnung.ausleihvorgangnr) : rechnung.ausleihvorgangnr != null)
-//            return false;
 
         return true;
     }
@@ -65,7 +64,6 @@ public class Rechnung {
         temp = Double.doubleToLongBits(summe);
         result = (int) (temp ^ (temp >>> 32));
         result = 31 * result + (rechnr != null ? rechnr.hashCode() : 0);
-//        result = 31 * result + (ausleihvorgangnr != null ? ausleihvorgangnr.hashCode() : 0);
         return result;
     }
 

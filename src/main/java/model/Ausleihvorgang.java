@@ -22,9 +22,6 @@ public class Ausleihvorgang {
     @Id
     @Column(name = "AUSLEIHVORGANGNR")
     private BigInteger ausleihvorgangnr;
-//    @Basic
-//    @Column(name = "KENNZEICHEN")
-//    private String kennzeichen;
     @ManyToOne
     @JoinColumn(name = "KENNZEICHEN", referencedColumnName = "KENNZEICHEN")
     private Autoexemplar autoexemplar;
@@ -73,14 +70,6 @@ public class Ausleihvorgang {
         this.ausleihvorgangnr = ausleihvorgangnr;
     }
 
-//    public String getKennzeichen() {
-//        return kennzeichen;
-//    }
-//
-//    public void setKennzeichen(String kennzeichen) {
-//        this.kennzeichen = kennzeichen;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,7 +83,6 @@ public class Ausleihvorgang {
         if (endezeit != null ? !endezeit.equals(that.endezeit) : that.endezeit != null) return false;
         if (ausleihvorgangnr != null ? !ausleihvorgangnr.equals(that.ausleihvorgangnr) : that.ausleihvorgangnr != null)
             return false;
-//        if (kennzeichen != null ? !kennzeichen.equals(that.kennzeichen) : that.kennzeichen != null) return false;
 
         return true;
     }
@@ -110,7 +98,6 @@ public class Ausleihvorgang {
         temp = Double.doubleToLongBits(endekm);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (ausleihvorgangnr != null ? ausleihvorgangnr.hashCode() : 0);
-//        result = 31 * result + (kennzeichen != null ? kennzeichen.hashCode() : 0);
         return result;
     }
 
