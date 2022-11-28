@@ -22,6 +22,8 @@ public class App extends Application {
         InputController.getInstance().initialize();
 
         Scene scene = new Scene(root);
+        stage.setMinHeight(442);
+        stage.setMinWidth(826);
 
         stage.setTitle("Autorückgabe");
         stage.setScene(scene);

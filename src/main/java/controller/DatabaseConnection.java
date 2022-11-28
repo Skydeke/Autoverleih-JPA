@@ -132,4 +132,37 @@ public class DatabaseConnection {
     public static void disableGUIErrors() {
         enabledGUI = false;
     }
+
+    public List<Autoexemplar> getLoanedCars() {
+        try {
+            TypedQuery<Autoexemplar> q = em.createQuery("SELECT DISTINCT a FROM Autoexemplar a, Ausleihvorgang v WHERE " +
+                    "v.autoexemplar = a AND v.endekm = null AND v.endezeit = null AND v.rechnung not in (SELECT r from Rechnung r) ", Autoexemplar.class);
+            return q.getResultList();
+        } catch (Exception e) {
+            if (enabledGUI) {
+                InputController.getInstance().printError(e, DBCON_QUE_FAILED);
+                Platform.exit();
+            }else {
+                System.out.println(DBCON_QUE_FAILED);
+            }
+            System.exit(-1);
+        }
+        return null;
+    }
+
+    public List<Autoexemplar> getAllCars() {
+        try {
+            TypedQuery<Autoexemplar> q = em.createQuery("SELECT a FROM Autoexemplar a", Autoexemplar.class);
+            return q.getResultList();
+        } catch (Exception e) {
+            if (enabledGUI) {
+                InputController.getInstance().printError(e, DBCON_QUE_FAILED);
+                Platform.exit();
+            }else {
+                System.out.println(DBCON_QUE_FAILED);
+            }
+            System.exit(-1);
+        }
+        return null;
+    }
 }

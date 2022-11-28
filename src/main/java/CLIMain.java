@@ -24,7 +24,7 @@ public class CLIMain {
 
     private void pollMenu() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Bitte gib das Kennzeichen des zurückzugebenen Autos ein (oder e für exit): ");
+        System.out.println("Bitte gib das Kennzeichen des zurückzugeben<en Autos ein (oder e für exit): ");
         String kennzeichen = scanner.nextLine();
         Autoexemplar retCar = DatabaseConnection.getInstance().getCarToReturn(kennzeichen);
         if (retCar == null) {
@@ -47,8 +47,15 @@ public class CLIMain {
         Timestamp timeNow = Timestamp.from(Instant.now());
         ausleihvorgang.setEndezeit(timeNow);
         ausleihvorgang.setEndekm(kmStand);
+
+        if (kmStand < retCar.getKilometerstand()){
+            System.out.println("Der Kilometerstand ist kleiner als der in der Datenbank: " + retCar.getKilometerstand());
+            return;
+        }
+
         double oldKmStand = retCar.getKilometerstand();
         retCar.setKilometerstand(kmStand);
+
 
         DatabaseConnection.getInstance().updateAvAndCar(ausleihvorgang, retCar);
 

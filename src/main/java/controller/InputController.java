@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -31,6 +32,9 @@ public class InputController {
 
     @FXML Button retBtn;
 
+    @FXML ListView<String> carListView;
+    @FXML CheckBox onlyLoanedCars;
+
     private static final InputController instance = new InputController();
 
     public static InputController getInstance() {
@@ -42,6 +46,24 @@ public class InputController {
     public void initialize(){
         //Called after @FXML is initialized
         DatabaseConnection.getInstance(); //To create the connection
+        onlyLoanedCars.setSelected(true);
+        onlyLoanedCars.selectedProperty().addListener((observable, oldValue, onlyLoanedC) -> {
+            if (onlyLoanedC){
+                //Show Only Loaned Cars
+                carListView.getItems().clear();
+                carListView.getItems().addAll(DatabaseConnection.getInstance().getLoanedCars().stream().map(Autoexemplar::getKennzeichen).collect(Collectors.toList()));
+            }else {
+                //Show all Cars
+                carListView.getItems().clear();
+                carListView.getItems().addAll(DatabaseConnection.getInstance().getAllCars().stream().map(Autoexemplar::getKennzeichen).collect(Collectors.toList()));
+            }
+        });
+
+        //Populate List View
+        carListView.getItems().clear();
+        List<Autoexemplar> lCars = DatabaseConnection.getInstance().getLoanedCars();
+        lCars.forEach( a -> System.out.println(a.getKennzeichen()));
+        carListView.getItems().addAll(lCars.stream().map(Autoexemplar::getKennzeichen).collect(Collectors.toList()));
     }
 
     @FXML
@@ -73,6 +95,11 @@ public class InputController {
             retBtn.setDisable(false);
             return;
         }
+        if (kmStand < auto.getKilometerstand()){
+            printMsg("Der Kilometerstand ist kleiner als der in der Datenbank: " + auto.getKilometerstand());
+            retBtn.setDisable(false);
+            return;
+        }
 
         Timestamp timeNow = Timestamp.from(Instant.now());
         ausleihvorgang.setEndezeit(timeNow);
@@ -93,6 +120,8 @@ public class InputController {
 
         summeTxtField.setText(r.getSumme() + "");
         beglichenCheckBox.setSelected(r.getBeglichen());
+        onlyLoanedCars.fire();//Toggle Selection to update CarListView
+        onlyLoanedCars.fire();//Trigger it again that it has the state from before update
     }
 
     public void informationDialog(String title, String message){
