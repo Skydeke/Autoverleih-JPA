@@ -44,7 +44,7 @@ public class DatabaseConnection {
             else
                 return results.get(0);
         }catch (Exception e){
-            InputController.getInstance().printError(e, "Auto mit Kennzeichen " + kenz + " kann nicht gefunden werden.");
+            InputController.getInstance().printError(e, "Datenbank-Verbindung konnte nicht aufgebaut werden.");
         }
         return null;
     }
