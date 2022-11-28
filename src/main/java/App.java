@@ -34,10 +34,6 @@ public class App extends Application {
             System.exit(0);
         });
         stage.show();
-
-        InputController.getInstance().informationDialog("Datenbank-Verbindung herstellen",
-                "Um die Verbindung zu unserem Datenbank-Server herzustellen muss dieser auf localhost:10110 laufen. \n" +
-                        "Abänderung dieser Information ist möglich in /resources/META-INF/perrsistence.xml");
     }
 
     public static void main(String[] args) {

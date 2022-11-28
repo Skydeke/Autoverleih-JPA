@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.application.Platform;
 import model.Ausleihvorgang;
 import model.Autoexemplar;
 import model.Rechnung;
@@ -8,7 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
+
 import java.util.List;
+
+import static constants.ErrorMsgs.*;
 
 public class DatabaseConnection {
 
@@ -22,9 +26,11 @@ public class DatabaseConnection {
         try {
             emf = Persistence.createEntityManagerFactory("AutoverleihJPA");
             em = emf.createEntityManager();
-            InputController.getInstance().printMsg("Verbindung zu Datenbank hergestellt.");
+            InputController.getInstance().printMsg(DBCON_CRE_SUC);
         }catch (Exception e){
-            InputController.getInstance().printError(e, "Die Datenbank-Verbindung konnte nicht geöffnet werden.");
+            InputController.getInstance().printError(e, DBCON_CRE_FAILED);
+            Platform.exit();
+            System.exit(-1);
         }
     }
 
@@ -44,7 +50,9 @@ public class DatabaseConnection {
             else
                 return results.get(0);
         }catch (Exception e){
-            InputController.getInstance().printError(e, "Datenbank-Verbindung konnte nicht aufgebaut werden.");
+            InputController.getInstance().printError(e, DBCON_ACC_FAILED);
+            Platform.exit();
+            System.exit(-1);
         }
         return null;
     }
@@ -54,7 +62,9 @@ public class DatabaseConnection {
             em.close();
             emf.close();
         }catch (NullPointerException ex){
-            InputController.getInstance().printError(ex, "Die DB-Verbindung konnte nicht geschlossen worden weil die Referenz NULL ist.");
+            InputController.getInstance().printError(ex, DBCON_CLO_FAILED);
+            Platform.exit();
+            System.exit(-1);
         }
     }
 
@@ -65,7 +75,9 @@ public class DatabaseConnection {
             em.merge(auto);
             em.getTransaction().commit();
         }catch (Exception e){
-            InputController.getInstance().printError(e, "Konnte Auto und Ausleihvorgang nicht in der Datenbank aktualisieren.");
+            InputController.getInstance().printError(e, DBCON_UPD_FAILED_CAR_AV);
+            Platform.exit();
+            System.exit(-1);
         }
     }
 
@@ -86,7 +98,9 @@ public class DatabaseConnection {
             em.getTransaction().commit();
             return rechnung;
         }catch (Exception e){
-            InputController.getInstance().printError(e, "Konnte Rechnung nicht in Datenbank einfügen oder der Ausliehvorgang keine rechnung hinzufügen.");
+            InputController.getInstance().printError(e, DBCON_UPD_FAILED_RECH_AV);
+            Platform.exit();
+            System.exit(-1);
         }
         return null;
     }

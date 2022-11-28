@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+    <persistence-unit name="AutoverleihJPA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>model.Ausleihvorgang</class>
+        <class>model.Ausstattung</class>
+        <class>model.Autoexemplar</class>
+        <class>model.Automodell</class>
+        <class>model.Fuehrerscheinklassen</class>
+        <class>model.Kunde</class>
+        <class>model.Rechnung</class>
+        <class>model.Reservierung</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.url" value=" database-connecton-string"/>
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+            <property name="javax.persistence.jdbc.user" value="ExampleUser"/>
+            <property name="javax.persistence.jdbc.password" value="totallysafepassword123"/>
+        </properties>
+    </persistence-unit>
+</persistence>
