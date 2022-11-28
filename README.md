@@ -27,6 +27,9 @@ For the Database connection to work the database needs to respond on localhost:1
 changed in the [persistence.xml](src/main/resources/META-INF/persistence.xml). Since this file contains sensitive information
 it should not be in GitHub. See the [persistence_example.xml](src/main/resources/META-INF/persistence_example.xml) for an example-version.
 
+For a car to be updated by this program it may not have an associated 'Rechnung' and the fields
+endeZeit, endeKm in the entity 'Ausleihvorgang' must be null.
+
 Database-Errors
 ======
 My original Database-Design would have worked perfectly, but for some reason JPA doesn't want to use 
