@@ -1,37 +1,35 @@
+import controller.DatabaseConnection;
 import model.*;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class Main {
+public class CLIMain {
 
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AutoverleihJPA");
     private EntityManager em = emf.createEntityManager();
 
     public static void main(String[] args) {
-        new Main();
+        new CLIMain();
     }
 
-    public Main() {
+    public CLIMain() {
         pollMenu();
     }
 
     private void pollMenu() {
         Scanner scanner = new Scanner(System.in);
         do {
-
             System.out.println("Bitte gib das Kennzeichen des zurückzugebenen Autos ein (oder e für exit): ");
             String kennzeichen = scanner.nextLine();
             if (kennzeichen.equals("e")) {
                 break;
             }
-            Autoexemplar retCar = getCarToReturn(kennzeichen);
+            Autoexemplar retCar = DatabaseConnection.getInstance().getCarToReturn(kennzeichen);
             if (retCar == null) {
                 System.out.println("Das Auto mit Kennzeichen " + kennzeichen + " kann nicht gefunden werden.");
                 break;
@@ -55,44 +53,19 @@ public class Main {
             double oldKmStand = retCar.getKilometerstand();
             retCar.setKilometerstand(kmStand);
 
-            em.getTransaction().begin();
-            em.merge(ausleihvorgang);
-            em.merge(retCar);
-            em.getTransaction().commit();
+            DatabaseConnection.getInstance().updateAvAndCar(ausleihvorgang, retCar);
 
             double anzKm = retCar.getKilometerstand() - oldKmStand;
             long anzTage = Duration.between(ausleihvorgang.getBeginnzeit().toLocalDateTime(), ausleihvorgang.getEndezeit().toLocalDateTime()).toDays();
             System.out.println("Es wurden " + anzKm + " Km in " + anzTage + " Tagen gefahren.");
 
-            Rechnung rechnung = new Rechnung();
             double summe = retCar.getAutomodell().getPreisprokm() * anzKm;
             summe += retCar.getAutomodell().getPreisprotag() * anzTage;
-            rechnung.setAusleihvorgang(ausleihvorgang);
-            rechnung.setSumme(summe);
-            rechnung.setBeglichen("f");
-            ausleihvorgang.setRechnung(rechnung);
             System.out.println("Die Gesammtkosten belaufen sich auf " + summe + " Euro");
 
-            em.getTransaction().begin();
-            em.merge(ausleihvorgang);
-            em.persist(rechnung);
-            em.getTransaction().commit();//TODO
+            Rechnung r = DatabaseConnection.getInstance().addRechnungZuAv(ausleihvorgang, summe, false);
         } while (true);
-        cleanUp();
-    }
 
-    private Autoexemplar getCarToReturn(String kenz) {
-        TypedQuery<Autoexemplar> q = em.createQuery("SELECT a FROM Autoexemplar a WHERE a.kennzeichen = :kenz", Autoexemplar.class);
-        q.setParameter("kenz", kenz);
-        List<Autoexemplar> results = q.getResultList();
-        if (results.size() != 1)
-            return null;
-        else
-            return results.get(0);
-    }
-
-    private void cleanUp() {
-        em.close();
-        emf.close();
+        DatabaseConnection.getInstance().closeConnection();
     }
 }

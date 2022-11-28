@@ -8,7 +8,7 @@ public class Rechnung {
     @Basic
     @Column(name = "SUMME")
     private double summe;
-    @SequenceGenerator(name = "RECH_ID_SEQ", sequenceName  = "RECH_ID_SEQ", allocationSize = 1)
+    @SequenceGenerator(name = "RECH_ID_SEQ", sequenceName  = "SEQ_RECH_IDENTITY", initialValue = 0, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RECH_ID_SEQ")
     @Id
     @Column(name = "RECHNR")
@@ -20,8 +20,8 @@ public class Rechnung {
     @Column(name = "BEGLICHEN")
     private String beglichen;
 
-    public String getBeglichen() {
-        return beglichen;
+    public boolean getBeglichen() {
+        return beglichen.contentEquals("t");
     }
 
     public void setBeglichen(String beglichen) {
