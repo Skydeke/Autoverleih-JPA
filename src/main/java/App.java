@@ -2,13 +2,10 @@ import controller.DatabaseConnection;
 import controller.InputController;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.util.Objects;
 
@@ -16,7 +13,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Pane root = new Pane();
+        Pane root;
 
 
         FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/view/Input.fxml")));
@@ -34,9 +31,5 @@ public class App extends Application {
             System.exit(0);
         });
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
