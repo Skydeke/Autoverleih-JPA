@@ -10,9 +10,6 @@ import java.util.stream.Collectors;
 
 public class CLIMain {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AutoverleihJPA");
-    private EntityManager em = emf.createEntityManager();
-
     public static void main(String[] args) {
         new CLIMain();
     }
