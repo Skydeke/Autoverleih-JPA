@@ -20,14 +20,12 @@ public class DatabaseConnection {
     private static DatabaseConnection instance;
 
     private EntityManagerFactory emf;
-    private EntityManager em;
 
     private static boolean enabledGUI = true;
 
     private DatabaseConnection() {
         try {
             emf = Persistence.createEntityManagerFactory("AutoverleihJPA");
-            em = emf.createEntityManager();
             if (enabledGUI)
                 InputController.getInstance().printMsg(DBCON_CRE_SUC);
         } catch (Exception e) {
@@ -50,9 +48,11 @@ public class DatabaseConnection {
 
     public Autoexemplar getCarToReturn(String kenz) {
         try {
+            EntityManager em = emf.createEntityManager();
             TypedQuery<Autoexemplar> q = em.createQuery("SELECT a FROM Autoexemplar a WHERE a.kennzeichen = :kenz", Autoexemplar.class);
             q.setParameter("kenz", kenz);
             List<Autoexemplar> results = q.getResultList();
+            em.close();
             if (results.size() != 1)
                 return null;
             else
@@ -66,12 +66,12 @@ public class DatabaseConnection {
             }
             System.exit(-1);
         }
+
         return null;
     }
 
     public void closeConnection() {
         try {
-            em.close();
             emf.close();
         } catch (NullPointerException ex) {
             if (enabledGUI) {
@@ -86,10 +86,12 @@ public class DatabaseConnection {
 
     public void updateAvAndCar(Ausleihvorgang ausleihvorgang, Autoexemplar auto) {
         try {
+            EntityManager em = emf.createEntityManager();
             em.getTransaction().begin();
             em.merge(ausleihvorgang);
             em.merge(auto);
             em.getTransaction().commit();
+            em.close();
         } catch (Exception e) {
             if (enabledGUI) {
                 InputController.getInstance().printError(e, DBCON_UPD_FAILED_CAR_AV);
@@ -112,10 +114,12 @@ public class DatabaseConnection {
         ausleihvorgang.setRechnung(rechnung);
 
         try {
+            EntityManager em = emf.createEntityManager();
             em.getTransaction().begin();
             em.merge(ausleihvorgang);
             em.persist(rechnung);
             em.getTransaction().commit();
+            em.close();
             return rechnung;
         } catch (Exception e) {
             if (enabledGUI) {
@@ -135,8 +139,10 @@ public class DatabaseConnection {
 
     public List<Autoexemplar> getLoanedCars() {
         try {
+            EntityManager em = emf.createEntityManager();
             TypedQuery<Autoexemplar> q = em.createQuery("SELECT DISTINCT a FROM Autoexemplar a, Ausleihvorgang v WHERE " +
                     "v.autoexemplar = a AND v.endekm = null AND v.endezeit = null AND v.rechnung not in (SELECT r from Rechnung r) ", Autoexemplar.class);
+            em.close();
             return q.getResultList();
         } catch (Exception e) {
             if (enabledGUI) {
@@ -152,7 +158,9 @@ public class DatabaseConnection {
 
     public List<Autoexemplar> getAllCars() {
         try {
+            EntityManager em = emf.createEntityManager();
             TypedQuery<Autoexemplar> q = em.createQuery("SELECT a FROM Autoexemplar a", Autoexemplar.class);
+            em.close();
             return q.getResultList();
         } catch (Exception e) {
             if (enabledGUI) {
