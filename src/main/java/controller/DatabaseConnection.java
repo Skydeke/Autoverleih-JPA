@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static constants.ErrorMsgs.*;
@@ -142,8 +143,9 @@ public class DatabaseConnection {
             EntityManager em = emf.createEntityManager();
             TypedQuery<Autoexemplar> q = em.createQuery("SELECT DISTINCT a FROM Autoexemplar a, Ausleihvorgang v WHERE " +
                     "v.autoexemplar = a AND v.endekm = null AND v.endezeit = null AND v.rechnung not in (SELECT r from Rechnung r) ", Autoexemplar.class);
+            List<Autoexemplar> list = q.getResultList();
             em.close();
-            return q.getResultList();
+            return list;
         } catch (Exception e) {
             if (enabledGUI) {
                 InputController.getInstance().printError(e, DBCON_QUE_FAILED);
@@ -160,8 +162,9 @@ public class DatabaseConnection {
         try {
             EntityManager em = emf.createEntityManager();
             TypedQuery<Autoexemplar> q = em.createQuery("SELECT a FROM Autoexemplar a", Autoexemplar.class);
+            List<Autoexemplar> list = q.getResultList();
             em.close();
-            return q.getResultList();
+            return list;
         } catch (Exception e) {
             if (enabledGUI) {
                 InputController.getInstance().printError(e, DBCON_QUE_FAILED);
