@@ -206,6 +206,14 @@ insert into Autoexemplar (Kennzeichen, Kilometerstand, LetzterTUEV, Kaufdatum, A
 insert into Autoexemplar (Kennzeichen, Kilometerstand, LetzterTUEV, Kaufdatum, AutomodellNr) values ('RV-FS-1234', 4232, to_date('2022-06-15','yyyy.mm.dd'), to_date('2022-04-04', 'yyyy.mm.dd'), 3);
 insert into Autoexemplar (Kennzeichen, Kilometerstand, LetzterTUEV, Kaufdatum, AutomodellNr) values ('RV-SW-7223', 168393, to_date('2022-06-14','yyyy.mm.dd'), to_date('2016-03-15', 'yyyy.mm.dd'), 4);
 insert into Autoexemplar (Kennzeichen, Kilometerstand, LetzterTUEV, Kaufdatum, AutomodellNr) values ('RV-FS-1225', 42328, to_date('2022-06-15','yyyy.mm.dd'), to_date('2021-02-04', 'yyyy.mm.dd'), 5);
+
+insert into Autoexemplar (Kennzeichen, Kilometerstand, LetzterTUEV, Kaufdatum, AutomodellNr) values ('RV-XS-124', 0, to_date('2022-06-15','yyyy.mm.dd'), to_date('2021-02-04', 'yyyy.mm.dd'), 5);
+insert into Autoexemplar (Kennzeichen, Kilometerstand, LetzterTUEV, Kaufdatum, AutomodellNr) values ('RV-FJ-175', 0, to_date('2022-06-15','yyyy.mm.dd'), to_date('2021-02-04', 'yyyy.mm.dd'), 5);
+insert into Autoexemplar (Kennzeichen, Kilometerstand, LetzterTUEV, Kaufdatum, AutomodellNr) values ('RV-AM-2564', 0, to_date('2022-06-15','yyyy.mm.dd'), to_date('2021-02-04', 'yyyy.mm.dd'), 5);
+insert into Autoexemplar (Kennzeichen, Kilometerstand, LetzterTUEV, Kaufdatum, AutomodellNr) values ('RV-SA-1950', 0, to_date('2022-06-15','yyyy.mm.dd'), to_date('2021-02-04', 'yyyy.mm.dd'), 5);
+insert into Autoexemplar (Kennzeichen, Kilometerstand, LetzterTUEV, Kaufdatum, AutomodellNr) values ('RV-MN-1254', 0, to_date('2022-06-15','yyyy.mm.dd'), to_date('2021-02-04', 'yyyy.mm.dd'), 5);
+insert into Autoexemplar (Kennzeichen, Kilometerstand, LetzterTUEV, Kaufdatum, AutomodellNr) values ('RV-JK-1254', 0, to_date('2022-06-15','yyyy.mm.dd'), to_date('2021-02-04', 'yyyy.mm.dd'), 5);
+insert into Autoexemplar (Kennzeichen, Kilometerstand, LetzterTUEV, Kaufdatum, AutomodellNr) values ('RV-LS-1825', 0, to_date('2022-06-15','yyyy.mm.dd'), to_date('2021-02-04', 'yyyy.mm.dd'), 5);
 commit;
 
 --ist_nachgeruestet_bei
@@ -229,19 +237,32 @@ commit;
 insert into Ausleihvorgang(beginnZeit, endeZeit, beginnKm, endeKm, AusleihvorgangNr, Kennzeichen) values (to_date('2022-10-12 12:00:30','yyyy.mm.dd HH24:MI:SS'), to_date('2022-10-19 11:50:00','yyyy.mm.dd HH24:MI:SS'), 168393, 168792, 0, 'RV-SW-7223');
 insert into Ausleihvorgang(beginnZeit, endeZeit, beginnKm, endeKm, AusleihvorgangNr, Kennzeichen) values (to_date('2022-09-26 09:01:00','yyyy.mm.dd HH24:MI:SS'), to_date('2022-09-26 10:03:00','yyyy.mm.dd HH24:MI:SS'), 160342, 160382, 1, 'RW-PA-2893');
 insert into Ausleihvorgang(beginnZeit, endeZeit, beginnKm, endeKm, AusleihvorgangNr, Kennzeichen) values (to_date('2022-08-15 12:07:13','yyyy.mm.dd HH24:MI:SS'), to_date('2022-08-15 18:05:43','yyyy.mm.dd HH24:MI:SS'), 80342, 80412, 2, 'RV-KA-789');
-insert into Ausleihvorgang(beginnZeit, endeZeit, beginnKm, endeKm, AusleihvorgangNr, Kennzeichen) values (to_date('2022-10-12 15:13:20','yyyy.mm.dd HH24:MI:SS'), to_date('2022-10-19 15:11:23','yyyy.mm.dd HH24:MI:SS'), 4232, 5121, 3, 'RV-FS-1234'); 
+
+insert into Ausleihvorgang(beginnZeit, endeZeit, beginnKm, endeKm, AusleihvorgangNr, Kennzeichen) values (to_date('2022-08-15 12:07:13','yyyy.mm.dd HH24:MI:SS'), null, 0, null, 3, 'RV-XS-124');
+insert into Ausleihvorgang(beginnZeit, endeZeit, beginnKm, endeKm, AusleihvorgangNr, Kennzeichen) values (to_date('2022-08-15 12:07:13','yyyy.mm.dd HH24:MI:SS'), null, 0, null, 4, 'RV-FJ-175');
+insert into Ausleihvorgang(beginnZeit, endeZeit, beginnKm, endeKm, AusleihvorgangNr, Kennzeichen) values (to_date('2022-08-15 12:07:13','yyyy.mm.dd HH24:MI:SS'), null, 0, null, 5, 'RV-AM-2564');
+insert into Ausleihvorgang(beginnZeit, endeZeit, beginnKm, endeKm, AusleihvorgangNr, Kennzeichen) values (to_date('2022-08-15 12:07:13','yyyy.mm.dd HH24:MI:SS'), null, 0, null, 6, 'RV-SA-1950');
+insert into Ausleihvorgang(beginnZeit, endeZeit, beginnKm, endeKm, AusleihvorgangNr, Kennzeichen) values (to_date('2022-08-15 12:07:13','yyyy.mm.dd HH24:MI:SS'), null, 0, null, 7, 'RV-MN-1254');
+insert into Ausleihvorgang(beginnZeit, endeZeit, beginnKm, endeKm, AusleihvorgangNr, Kennzeichen) values (to_date('2022-08-15 12:07:13','yyyy.mm.dd HH24:MI:SS'), null, 0, null, 8, 'RV-JK-1254');
+insert into Ausleihvorgang(beginnZeit, endeZeit, beginnKm, endeKm, AusleihvorgangNr, Kennzeichen) values (to_date('2022-08-15 12:07:13','yyyy.mm.dd HH24:MI:SS'), null, 0, null, 9, 'RV-LS-1825');
 commit;
 
 --Rechnung
 insert into Rechnung (Summe, Beglichen, AusleihvorgangNr) values (1849.7 , 't', 0);
 insert into Rechnung (Summe, Beglichen, AusleihvorgangNr) values (144 , 'f', 1);
 insert into Rechnung (Summe, Beglichen, AusleihvorgangNr) values (178 , 't', 2);
-insert into Rechnung (Summe, Beglichen, AusleihvorgangNr) values (2627.8 , 't', 3);
 commit;
 
 --Reservierung
 insert into Reservierung(geplanterStart, geplantesEnde, KundenNr, AutomodellNr, AusleihvorgangNr, ResNr) values (to_date('2022-10-12 12:00:00','yyyy.mm.dd HH24:MI:SS'), to_date('2022-10-19 12:00:00','yyyy.mm.dd HH24:MI:SS'), 0, 4, 0, 0);
 insert into Reservierung(geplanterStart, geplantesEnde, KundenNr, AutomodellNr, AusleihvorgangNr, ResNr) values (to_date('2022-09-26 09:00:00','yyyy.mm.dd HH24:MI:SS'), to_date('2022-09-26 10:00:00','yyyy.mm.dd HH24:MI:SS'), 2, 1, 1, 1);
 insert into Reservierung(geplanterStart, geplantesEnde, KundenNr, AutomodellNr, AusleihvorgangNr, ResNr) values (to_date('2022-08-15 12:10:00','yyyy.mm.dd HH24:MI:SS'), to_date('2022-08-15 18:10:00','yyyy.mm.dd HH24:MI:SS'), 1, 0, 2, 2);
-insert into Reservierung(geplanterStart, geplantesEnde, KundenNr, AutomodellNr, AusleihvorgangNr, ResNr) values (to_date('2022-10-12 15:10:00','yyyy.mm.dd HH24:MI:SS'), to_date('2022-10-19 15:10:00','yyyy.mm.dd HH24:MI:SS'), 2, 3, 3, 3);
+
+insert into Reservierung(geplanterStart, geplantesEnde, KundenNr, AutomodellNr, AusleihvorgangNr, ResNr) values (to_date('2022-09-15 12:10:00','yyyy.mm.dd HH24:MI:SS'), to_date('2022-09-15 18:10:00','yyyy.mm.dd HH24:MI:SS'), 1, 5, 3, 3);
+insert into Reservierung(geplanterStart, geplantesEnde, KundenNr, AutomodellNr, AusleihvorgangNr, ResNr) values (to_date('2022-09-15 12:10:00','yyyy.mm.dd HH24:MI:SS'), to_date('2022-09-15 18:10:00','yyyy.mm.dd HH24:MI:SS'), 1, 5, 4, 4);
+insert into Reservierung(geplanterStart, geplantesEnde, KundenNr, AutomodellNr, AusleihvorgangNr, ResNr) values (to_date('2022-09-15 12:10:00','yyyy.mm.dd HH24:MI:SS'), to_date('2022-09-15 18:10:00','yyyy.mm.dd HH24:MI:SS'), 1, 5, 5, 5);
+insert into Reservierung(geplanterStart, geplantesEnde, KundenNr, AutomodellNr, AusleihvorgangNr, ResNr) values (to_date('2022-09-15 12:10:00','yyyy.mm.dd HH24:MI:SS'), to_date('2022-09-15 18:10:00','yyyy.mm.dd HH24:MI:SS'), 1, 5, 6, 6);
+insert into Reservierung(geplanterStart, geplantesEnde, KundenNr, AutomodellNr, AusleihvorgangNr, ResNr) values (to_date('2022-09-15 12:10:00','yyyy.mm.dd HH24:MI:SS'), to_date('2022-09-15 18:10:00','yyyy.mm.dd HH24:MI:SS'), 1, 5, 7, 7);
+insert into Reservierung(geplanterStart, geplantesEnde, KundenNr, AutomodellNr, AusleihvorgangNr, ResNr) values (to_date('2022-09-15 12:10:00','yyyy.mm.dd HH24:MI:SS'), to_date('2022-09-15 18:10:00','yyyy.mm.dd HH24:MI:SS'), 1, 5, 8, 8);
+insert into Reservierung(geplanterStart, geplantesEnde, KundenNr, AutomodellNr, AusleihvorgangNr, ResNr) values (to_date('2022-09-15 12:10:00','yyyy.mm.dd HH24:MI:SS'), to_date('2022-09-15 18:10:00','yyyy.mm.dd HH24:MI:SS'), 1, 5, 9, 9);
 commit;
